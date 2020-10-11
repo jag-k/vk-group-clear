@@ -36,14 +36,14 @@ def remove_managers():
             yield
 
 
-@task("Получение пользователей")
-def get_members():
+@task("Удаление пользователей")
+def remove_members():
     members = g.get_members(
         group_id=GROUP_ID,
     )
     yield members['count']
     for m in members['items']:
-        if m == 173996641:
+        if m == user_id:
             yield m
         else:
             debug(m)
@@ -54,7 +54,7 @@ def get_members():
 
 
 @task("Удаление постов со стены")
-def get_members():
+def remove_posts():
     wall = api.wall.get(
         owner_id=-GROUP_ID,
         count=1,
