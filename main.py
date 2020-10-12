@@ -75,7 +75,7 @@ def remove_posts():
 
 
 @task("Удаление изображений")
-def get_members():
+def del_images():
     images = api.photos.getAll(
         owner_id=-GROUP_ID,
         count=1,
@@ -92,6 +92,27 @@ def get_members():
             yield api.photos.delete(
                 owner_id=-GROUP_ID,
                 photo_id=i['id']
+            )
+
+
+@task("Удаление видео")
+def del_video():
+    video = api.video.get(
+        owner_id=-GROUP_ID,
+        count=1,
+    )
+    max_count = video['count']
+    yield max_count
+    for offset in range(0, max_count+1, 200):
+        video = api.video.get(
+            owner_id=-GROUP_ID,
+            offset=offset,
+            count=200
+        )
+        for v in video['items']:
+            yield api.video.delete(
+                owner_id=-GROUP_ID,
+                photo_id=v['id']
             )
 
 
